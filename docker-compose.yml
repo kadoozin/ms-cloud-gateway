@@ -1,0 +1,52 @@
+services:
+  eureka-server:
+    build: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - microsservicos-network
+
+  ms-cloud-gateway:
+    build: ./ms-cloud-gateway
+    container_name: ms-cloud-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka-server
+    networks:
+      - microsservicos-network
+
+  ms-clientes:
+    build: ./ms-clientes
+    container_name: ms-clientes
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka-server
+    networks:
+      - microsservicos-network
+
+  ms-cartoes:
+    build: ./ms-cartoes
+    container_name: ms-cartoes
+    ports:
+      - "8082:8082"
+    depends_on:
+      - eureka-server
+    networks:
+      - microsservicos-network
+
+  ms-avaliador-credito:
+    build: ./ms-avaliador-credito
+    container_name: ms-avaliador-credito
+    ports:
+      - "8083:8083"
+    depends_on:
+      - eureka-server
+    networks:
+      - microsservicos-network
+
+networks:
+  microsservicos-network:
+    driver: bridge
